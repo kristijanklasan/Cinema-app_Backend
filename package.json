@@ -1,0 +1,27 @@
+{
+  "name": "cinema_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "y",
+  "scripts": {
+    "test": "n"
+  },
+  "repository": {
+    "type": "git",
+    "url": "y"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "json": "^10.0.0",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "request": "^2.88.2",
+    "xml2js": "^0.4.23"
+  }
+}
