@@ -69,45 +69,13 @@ app.get('/register', (req, res)=>{
 app.listen(backend, () => {  console.log('Server radi na:' + backend);});
 ///////
 
+//app.post("/db/login", (req,res) =>{
+ // login.login(req,res)})
 
+var register = require("./jsFiles/register")
 app.post('/register', (request, response, next)=> {
-  
-    let post_data = request.body; 
-  
-    let ime = post_data.ime; 
-    let prezime = post_data.prezime; 
-    let telefon = post_data.telefon; 
-    let email = post_data.email; 
-    let lozinka = post_data.lozinka; 
-
-    var crypto = require('crypto'); 
-    var hash = crypto.createHash('sha256').update(lozinka).digest('base64'); 
-    console.log(hash); 
-
-    var emailSql = "SELECT count(*) AS email FROM User WHERE email = ?";
-    con.query(emailSql,[email],(err,res)=>{
-         if(err) throw err; 
-    
-        var x = res[0].email; 
-
-
-        if(x == 0){
-  
-          var sql = 'INSERT INTO User(ime,prezime,telefon,email,lozinka) VALUES (?, ?, ?, ?, ?)';
-
-          con.query(sql,[ime,prezime,telefon,email,hash], (err,res) =>{
-              if(err){
-                 throw err;
-               }
-               console.log(true)
-               response.send(true);
-         })
-        }else{
-          response.json("Korisnik već postoji!");
-        }
-      })
-    }
-);
+    register.register(request,response)
+});
 
 app.post('/login', (request, response, next)=>{
     let post_data = request.body; 

@@ -35,6 +35,8 @@ module.exports = {
       }
     })
   },
+
+
   createAdmins:function(admins){
     admins.forEach(admin => {
       var checkIfEmailExists = `select * from User where email ="${admin.email}"`
@@ -59,6 +61,8 @@ module.exports = {
       })
     });
   },
+
+
   insertTables:function(tables){
     tables.forEach(table=>{
       con.query(table, function(err,res){
@@ -67,5 +71,28 @@ module.exports = {
         console.log("created table if not exists");
       })
     })
+  },
+
+
+  register:function(post_data, hash, insertUser, checkEmail){
+        
+    con.query(checkEmail,[post_data.email],(err,res)=>{
+      if(err) throw err;
+      if(res.length>0){
+        response.json("Korisnik već postoji!");
+      }else{
+        con.query(insertUser,[post_data.ime,post_data.prezime,post_data.telefon,post_data.email,hash], (err,res) =>{
+          if(err){
+              throw err;
+            }
+            console.log(true)
+            response.send(true);
+          
+        })
+        }
+    })
   }
+
 }
+  
+
