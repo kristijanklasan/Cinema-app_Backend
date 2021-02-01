@@ -133,6 +133,8 @@ module.exports = {
   },
 
   updateUser:function(sql,data,hash,response){
+    
+
     con.query(sql,[ data.ime, data.prezime, data.telefon, data.email, hash, data.id], (err,res)=>{
       if(err) throw err; 
       
@@ -162,6 +164,8 @@ module.exports = {
   },
 
   provjeraFilma:function(sql,data,response){
+    console.log(data.id_korisnik)
+    console.log(data.id_film)
     con.query(sql, [data.id_korisnik, data.id_film], (err, res)=>{
       if(err) throw err; 
   

@@ -3,12 +3,12 @@ var dbcon = require("../jsFiles/DBconnection")
 
 
 module.exports ={
-    changeUser:function(request,response){
-        let post_data = request.body; 
-    
-        const crypto = require('crypto'); 
-        var hash = crypto.createHash('sha256').update(lozinka).digest('base64'); 
+    changeUser:function(post_data,response){
         
+
+        const crypto = require('crypto'); 
+        var hash = crypto.createHash('sha256').update(post_data.lozinka).digest('base64'); 
+
         console.log(hash)
         
     

@@ -160,8 +160,9 @@ app.post('/unos_filma', (request, response, next)=> {
 
 var changeUser = require("./jsFiles/changeUser")
 app.post('/user/update', (request, response, next)=>{
+  let post_data = request.body; 
 
-    changeUser.changeUser(request,response)
+    changeUser.changeUser(post_data,response)
 })
 
 app.get('/user/podaci/:email', (request, response, next)=>{
@@ -187,7 +188,7 @@ app.post('/mojIzbor/insert', (request, response, next) => {
 
 app.get('/mojIzbor/provjeraFilma/:id_korisnik/:id_film', (request, response, next)=>{
 
-  let post_data = request.body
+  let post_data = request.params
 
   var sql = "SELECT * FROM MojIzbor WHERE id_korisnik = ? AND id_film = ?"; 
   DBconnection.provjeraFilma(sql,post_data,response)
