@@ -11,7 +11,7 @@ module.exports = {
 
         var insertUser = `INSERT INTO User(ime,prezime,telefon,email,lozinka) VALUES (?, ?, ?, ?, ?)`;
 
-        var checkEmail = "SELECT count(*) AS email FROM User WHERE email = ?";
+        var checkEmail = "select * from User where email  = ?";
         dbcon.register(post_data, hash, insertUser, checkEmail,res)
     }
 }
