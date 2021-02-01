@@ -104,23 +104,27 @@ module.exports = {
     })
   },
 
-  getMovies:function(response,sql, column, finding){
+  getMovies:function(response,sql, id){
     console.log("get movies ")
-    if(column==null && finding== null){
+    if(id== null){
       
       con.query(sql,(err, res)=>{
         if(err) throw err; 
         if(res.length>0){
-          console.log(res); 
+          //console.log(res); 
           response.json(res);
         }
       })
     }else{
       console.log("everything is not null")
-      con.query(sql,[column, finding],(err, res)=>{
+      console.log(id)
+      console.log("Did the vrite out?")
+      con.query(sql,[id],(err, res)=>{
+        console.log(sql)
+        console.log(res)
         if(err) throw err; 
         if(res.length>0){
-          console.log(res); 
+          //console.log(res); 
           response.json(res);
         }
       })

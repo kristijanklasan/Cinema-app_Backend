@@ -93,21 +93,21 @@ app.get('/dohvat_filmova',(request, response, next)=>{
 })
 
 app.get('/film/filmDetalji/:id',(request, response, next)=>{
-  
+  console.log("Pokusaj dohvacanja filmova preko id-a")
   //let id = request.params.id; 
    
   //console.log(id); 
-  var sql = "SELECT * FROM Film WHERE ? = ?"; 
-  DBconnection.getMovies(response,sql,"id",request.params.id)
+  var sql = `SELECT * FROM Film WHERE id = ?`; 
+  DBconnection.getMovies(response,sql,request.params.id)
 })
 
 app.get('/film/kategorije/:zanr',(request, response, next)=>{
-  
+  console.log("Pokusaj dohvacanja filmova preko zanra")
   //let zanr = request.params.zanr; 
   //console.log(zanr); 
   
-  var sql = "SELECT * FROM Film WHERE ? = ?"; 
-  DBconnection.getMovies(response,sql,"zanr",request.params.zanr)
+  var sql = "SELECT * FROM Film WHERE zanr = ?"; 
+  DBconnection.getMovies(response,sql,request.params.zanr)
 })
 
 /*
