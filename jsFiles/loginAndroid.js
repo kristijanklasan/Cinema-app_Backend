@@ -5,7 +5,7 @@ var dbcon = require("../jsFiles/DBconnection")
 module.exports = {
     androidLogin:function(req,res){
 
-        let post_data = request.body; 
+        let post_data = req.body; 
 
 
         var crypto = require('crypto'); 

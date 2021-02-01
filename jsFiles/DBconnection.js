@@ -107,6 +107,7 @@ module.exports = {
 
   getMovies:function(response,sql, column, finding){
     if(column==null && finding== null){
+      console.log("everything is null")
       con.query(sql,(err, res)=>{
         if(err) throw err; 
         if(res.length>0){

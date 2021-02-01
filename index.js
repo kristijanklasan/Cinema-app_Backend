@@ -72,6 +72,8 @@ app.listen(backend, () => {  console.log('Server radi na:' + backend);});
 //app.post("/db/login", (req,res) =>{
  // login.login(req,res)})
 
+
+ //works
 var register = require("./jsFiles/register")
 app.post('/register', (request, response, next)=> {
     register.register(request,response)
@@ -103,7 +105,7 @@ app.get('/film/kategorije/:zanr',(request, response, next)=>{
   
   //let zanr = request.params.zanr; 
   //console.log(zanr); 
-
+  
   var sql = "SELECT * FROM Film WHERE ? = ?"; 
   DBconnection.getMovies(response,sql,"zanr",request.params.zanr)
 })
