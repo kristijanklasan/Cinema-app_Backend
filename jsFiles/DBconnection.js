@@ -74,19 +74,19 @@ module.exports = {
   },
 
 
-  register:function(post_data, hash, insertUser, checkEmail){
+  register:function(post_data, hash, insertUser, checkEmail,res){
         
     con.query(checkEmail,[post_data.email],(err,res)=>{
       if(err) throw err;
       if(res.length>0){
-        response.json("Korisnik već postoji!");
+        res.json("Korisnik već postoji!");
       }else{
         con.query(insertUser,[post_data.ime,post_data.prezime,post_data.telefon,post_data.email,hash], (err,res) =>{
           if(err){
               throw err;
             }
             console.log(true)
-            response.send(true);
+            res.send(true);
           
         })
         }
