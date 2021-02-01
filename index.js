@@ -166,15 +166,15 @@ app.post('/user/update', (request, response, next)=>{
 
 app.get('/user/podaci/:email', (request, response, next)=>{
 
-  var sql = "SELECT * FROM User WHERE ? = ?"; 
-  DBconnection.userData(sql, "email",request.params.email,response)
+  var sql = "SELECT * FROM User WHERE email = ?"; 
+  DBconnection.userData(sql,request.params.email,response)
 })
 
 
 app.get('/user/podaci_id/:id', (request, response, next)=>{
   
-  var sql = "SELECT * FROM User WHERE ? = ?"; 
-  DBconnection.userData(sql, "email",request.params.email,response)
+  var sql = "SELECT * FROM User WHERE id = ?"; 
+  DBconnection.userData(sql, request.params.id,response)
 })
 
 app.post('/mojIzbor/insert', (request, response, next) => {
