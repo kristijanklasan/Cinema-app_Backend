@@ -77,67 +77,35 @@ app.post('/register', (request, response, next)=> {
     register.register(request,response)
 });
 
+var loginAndroid = require("./jsFiles/loginAndroid")
 app.post('/login', (request, response, next)=>{
-    let post_data = request.body; 
-
-    var email = post_data.email; 
-    var lozinka = post_data.lozinka; 
-    var crypto = require('crypto'); 
-    var hash = crypto.createHash('sha256').update(lozinka).digest('base64'); 
-    console.log(hash); 
-
-    var sql = "SELECT * FROM User WHERE email = ? AND lozinka = ?";
-    con.query(sql,[email,hash],(err,res)=>{
-      if(err) throw err; 
-      console.log(res);
-      if(res.length > 0){
-        response.json(res);
-      }else{
-        response.json("Pogrešna prijava!"); 
-      }
-    })
+  loginAndroid.androidLogin(request,response)
 })
 
+var DBconnection = require("./jsFiles/DBconnection")
 app.get('/dohvat_filmova',(request, response, next)=>{
   
-  var sql = "SELECT naziv, slika, zanr, trajanje, ocjena, id, slika_pozadina FROM Film"; 
-  con.query(sql,(err, res)=>{
-    if(err) throw err; 
-    if(res.length>0){
-      console.log(res); 
-      response.json(res);
-    }
-  })
+  //var sql = "SELECT naziv, slika, zanr, trajanje, ocjena, id, slika_pozadina FROM Film"; 
+  var sql = "SELECT * FROM Film"; 
+  DBconnection.getMovies(response,sql)
 })
 
 app.get('/film/filmDetalji/:id',(request, response, next)=>{
   
-  let id = request.params.id; 
+  //let id = request.params.id; 
    
-  console.log(id); 
-  var sql = "SELECT * FROM Film WHERE id = ?"; 
-  con.query(sql,[id],(err, res)=>{
-    if(err) throw err; 
-    if(res.length>0){
-      console.log(res); 
-      response.json(res);
-    }
-  })
+  //console.log(id); 
+  var sql = "SELECT * FROM Film WHERE ? = ?"; 
+  DBconnection.getMovies(response,sql,"id",request.params.id)
 })
 
 app.get('/film/kategorije/:zanr',(request, response, next)=>{
   
-  let zanr = request.params.zanr; 
-  console.log(zanr); 
+  //let zanr = request.params.zanr; 
+  //console.log(zanr); 
 
-  var sql = "SELECT * FROM Film WHERE zanr = ?"; 
-  con.query(sql, [zanr], (err,res)=>{
-    if(err) throw err; 
-
-    if(res.length > 0){
-      response.json(res); 
-    }
-  })
+  var sql = "SELECT * FROM Film WHERE ? = ?"; 
+  DBconnection.getMovies(response,sql,"zanr",request.params.zanr)
 })
 
 /*
@@ -188,153 +156,57 @@ app.post('/unos_filma', (request, response, next)=> {
   }
 );
 
+var changeUser = require("./jsFiles/changeUser")
 app.post('/user/update', (request, response, next)=>{
 
-    let post_data = request.body; 
-
-    let ime = post_data.ime; 
-    let prezime = post_data.prezime; 
-    let telefon = post_data.telefon;
-    let email = post_data.email; 
-    let lozinka = post_data.lozinka; 
-    let id = post_data.id; 
-
-    console.log(lozinka)
-
-    const crypto = require('crypto'); 
-    var hash = crypto.createHash('sha256').update(lozinka).digest('base64'); 
-    
-    console.log("dfsdfsdfdsfsfsdfsffsd")
-    console.log(hash)
-    
-    var post  = {ime, prezime, telefon, email, lozinka};
-    var condition = {id};
-    
-
-    var sql = 'UPDATE User SET ime = ?, prezime = ?, telefon = ?, email = ?, lozinka = ? WHERE id = ? ';
-
-    con.query(sql,[ ime, prezime, telefon, email, hash, id], (err,res)=>{
-        if(err) throw err; 
-        
-        response.json(true); 
-    })
-    
+    changeUser.changeUser(request,response)
 })
 
 app.get('/user/podaci/:email', (request, response, next)=>{
-  
-  let email = request.params.email; 
-  console.log(email);
 
-  var sql = "SELECT * FROM User WHERE email = ?"; 
-  con.query(sql, [email], (err, res)=>{
-    if(err) throw err; 
-    if(res.length>0){
-      console.log(res); 
-      response.json(res);
-    }else{
-      response.json(false); 
-    }
-  })
+  var sql = "SELECT * FROM User WHERE ? = ?"; 
+  DBconnection.userData(sql, "email",request.params.email,response)
 })
 
 
 app.get('/user/podaci_id/:id', (request, response, next)=>{
   
-  let id = request.params.id; 
-  console.log(id);
-
-  var sql = "SELECT * FROM User WHERE id = ?"; 
-  con.query(sql, [id], (err, res)=>{
-    if(err) throw err; 
-    if(res.length>0){
-      console.log(res); 
-      response.json(res);
-    }else{
-      response.json(false); 
-    }
-  })
+  var sql = "SELECT * FROM User WHERE ? = ?"; 
+  DBconnection.userData(sql, "email",request.params.email,response)
 })
 
 app.post('/mojIzbor/insert', (request, response, next) => {
 
   let post_data = request.body; 
 
-  let datum_dodavanja = post_data.datum_dodavanja; 
-  let id_korisnik = post_data.id_korisnik; 
-  let id_film = post_data.id_film; 
-
   var sql = "INSERT INTO MojIzbor (datum_dodavanja, id_korisnik, id_film) VALUES (?, ?, ?)"; 
-  con.query(sql, [datum_dodavanja,id_korisnik, id_film], (err, res)=>{
-
-    if(err) throw err; 
-
-    response.json("true"); 
-  })
+  DBconnection.dodajNoviIzbor(sql,post_data,response)
 })
 
 app.get('/mojIzbor/provjeraFilma/:id_korisnik/:id_film', (request, response, next)=>{
 
-  let id_korisnik = request.params.id_korisnik; 
-  let id_film = request.params.id_film; 
+  let post_data = request.body
 
   var sql = "SELECT * FROM MojIzbor WHERE id_korisnik = ? AND id_film = ?"; 
-  con.query(sql, [id_korisnik,id_film], (err, res)=>{
-    if(err) throw err; 
-
-    if(res.length>0){
-      response.json(0); 
-    }
-
-    else{
-      response.json(1); 
-    }
-  })
+  DBconnection.provjeraFilma(sql,post_data,response)
 })
 
 app.get('/mojIzbor/dohvatPoDatumu/:id_korisnik/:datum_dodavanja', (request, response, next)=>{
 
-  let id_korisnik = request.params.id_korisnik; 
-  let datum_dodavanja = request.params.datum_dodavanja; 
-
   var sql = "SELECT MojIzbor.id_korisnik, MojIzbor.datum_dodavanja, Film.naziv, Film.slika_pozadina, Film.id  FROM MojIzbor, Film WHERE MojIzbor.id_korisnik = ? AND MojIzbor.datum_dodavanja = ? AND MojIzbor.id_film = Film.id"; 
-  con.query(sql, [id_korisnik, datum_dodavanja], (err,res)=>{
-    if(err) throw err; 
-
-    if(res.length > 0){
-      response.json(res); 
-    }else{
-      console.log("null");
-      response.json(null);
-    }
-  })
+  DBconnection.dohvatPoDatumu(sql,request.params,response)
 })
 
 app.delete('/mojIzbor/deleteIzbor/:id_korisnik/:id_film', (request, response, next)=>{
 
-  let id_korisnik = request.params.id_korisnik; 
-  let id_film = request.params.id_film; 
-
   var sql = "DELETE FROM MojIzbor WHERE id_korisnik = ? AND id_film = ?"; 
-  con.query(sql, [id_korisnik, id_film], (err,res)=>{
-
-    if(err) throw err; 
-
-    response.json("true"); 
-  })
+  DBconnection.deleteIzbor(sql,request.params,response)
 })
 
 app.get('/mojIzbor/izborDohvat/:id_korisnik', (request, response,next) =>{
 
-  let id_korisnik = request.params.id_korisnik;
-
   var sql = "SELECT MojIzbor.id_korisnik, Film.naziv, Film.slika_pozadina, Film.id  FROM MojIzbor, Film WHERE MojIzbor.id_korisnik = ? AND MojIzbor.id_film = Film.id"; 
-  con.query(sql, [id_korisnik], (err,res)=>{
-    if(err) throw err; 
-
-    console.log("Prikazani su svi izbori!"); 
-    response.json(res);
-  })
+  DBconnection.izborDohvat(sql,request.params,response)
 })
 
 
