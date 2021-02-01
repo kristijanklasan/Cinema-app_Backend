@@ -86,9 +86,9 @@ app.post('/login', (request, response, next)=>{
 
 var DBconnection = require("./jsFiles/DBconnection")
 app.get('/dohvat_filmova',(request, response, next)=>{
-  
-  //var sql = "SELECT naziv, slika, zanr, trajanje, ocjena, id, slika_pozadina FROM Film"; 
-  var sql = "SELECT * FROM Film"; 
+  console.log("Pokusaj dohvacanja filmova")
+  var sql = "SELECT naziv, slika, zanr, trajanje, ocjena, id, slika_pozadina FROM Film"; 
+  //var sql = "SELECT * FROM Film"; 
   DBconnection.getMovies(response,sql)
 })
 

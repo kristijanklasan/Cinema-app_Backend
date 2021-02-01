@@ -1,6 +1,5 @@
 
 const mysql = require("mysql")
-const { debug } = require("request")
 var con = mysql.createConnection({
   host: "remotemysql.com",
   user: "KnV19OC0YF",
@@ -106,8 +105,9 @@ module.exports = {
   },
 
   getMovies:function(response,sql, column, finding){
+    console.log("get movies ")
     if(column==null && finding== null){
-      console.log("everything is null")
+      
       con.query(sql,(err, res)=>{
         if(err) throw err; 
         if(res.length>0){
@@ -116,6 +116,7 @@ module.exports = {
         }
       })
     }else{
+      console.log("everything is not null")
       con.query(sql,[column, finding],(err, res)=>{
         if(err) throw err; 
         if(res.length>0){
