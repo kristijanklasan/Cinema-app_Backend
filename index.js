@@ -129,6 +129,62 @@ app.post('/film/dodaj_zanr', (request, response, next)=> {
 
 */
 
+
+app.post('/user/update', (request, response, next)=>{
+
+    let post_data = request.body; 
+
+    let ime = post_data.ime; 
+    let prezime = post_data.prezime; 
+    let telefon = post_data.telefon;
+    let email = post_data.email; 
+    let lozinka = post_data.lozinka; 
+    let slika = post_data.slika; 
+    let id = post_data.id; 
+
+    console.log(lozinka)
+
+    const crypto = require('crypto'); 
+    var hash = crypto.createHash('sha256').update(lozinka).digest('base64'); 
+    
+    console.log("dfsdfsdfdsfsfsdfsffsd")
+    console.log(hash)
+    
+    var post  = {ime, prezime, telefon, email, lozinka};
+    var condition = {id};
+    
+
+    var sql = 'UPDATE User SET ime = ?, prezime = ?, telefon = ?, email = ?, lozinka = ?, slika = ? WHERE id = ? ';
+
+    con.query(sql,[ ime, prezime, telefon, email, hash, slika, id], (err,res)=>{
+        if(err) throw err; 
+        
+        response.json(true); 
+    })
+    
+})
+
+app.post('/user/update2', (request, response, next)=>{
+
+  let post_data = request.body; 
+
+  let ime = post_data.ime; 
+  let prezime = post_data.prezime; 
+  let telefon = post_data.telefon;
+  let email = post_data.email; 
+  let slika = post_data.slika; 
+  let id = post_data.id; 
+  
+  var sql = 'UPDATE User SET ime = ?, prezime = ?, telefon = ?, email = ?, slika = ? WHERE id = ? ';
+
+  con.query(sql,[ ime, prezime, telefon, email, slika, id], (err,res)=>{
+      if(err) throw err; 
+      
+      response.json(true); 
+  })
+  
+})
+
 app.post('/unos_filma', (request, response, next)=> {
   
   let post_data = request.body; 
